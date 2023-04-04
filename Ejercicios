@@ -50,3 +50,28 @@ SELECT *, DATEDIFF(YEAR, [Fecha de Nacimiento], GETDATE()) AS Edad
 FROM Estudiantes
 WHERE DATEDIFF(YEAR, [Fecha de Nacimiento], GETDATE()) > '18'
 ORDER BY Edad ASC;
+-- Se requiere saber el Nombre,el correo, la camada y la fecha de ingreso de personas del staff que contienen correo .edu y su DocenteID se mayor o igual que 100. 
+-- Keywords: Staff, correo, DocentesID
+
+SELECT Nombre, Correo, Camada, [Fecha Ingreso]
+FROM Staff
+WHERE Correo LIKE '%.edu%' AND DocentesID >= 100;
+
+-- Se requiere conocer el documento, el domicilio el código postal y el nombre de los primeros estudiantes que se registraron en la plataforma. 
+-- Keywords: Documento, Estudiantes, Fecha Ingreso
+
+SELECT Documento, Domicilio, [Codigo Postal], Nombre, [Fecha Ingreso]
+FROM Estudiantes
+ORDER BY [Fecha Ingreso] ASC;
+
+SELECT Documento, Domicilio, [Codigo Postal], Nombre
+FROM Estudiantes
+WHERE [Fecha Ingreso] = (SELECT MIN([Fecha Ingreso]) AS fechamin FROM Estudiantes);
+
+-- Indicar el nombre apellido y documento de los docentes y tutores que tienen asignaturas “UX”. Keywords: Staff, Asignaturas, Nombre, Apellido.
+
+SELECT Nombre, Apellido, Documento
+FROM Staff
+WHERE Asignatura IN (SELECT AsignaturasID
+FROM Asignaturas
+WHERE Nombre LIKE '%UX%');
