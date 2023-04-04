@@ -1,1 +1,52 @@
+-- Indicar cuántos cursos y carreras  tiene el área de Data. Renombrar la nueva columna como cant_asignaturas. Keywords: Tipo, Área, Asignaturas.
 
+SELECT Tipo, COUNT (AsignaturasID) AS cant_asignaturas
+FROM Asignaturas
+WHERE Area = 5
+GROUP BY Tipo;
+
+-- Se requiere saber cual es el nombre, el documento y el teléfono de los estudiantes que son profesionales en agronomía y que nacieron entre el año 1970 y el año 2000. 
+-- Keywords: Estudiantes, Profesión, fecha de Nacimiento.
+
+
+SELECT Nombre, Documento, Profesion, Telefono, [Fecha de Nacimiento]
+FROM Estudiantes
+WHERE Profesion = '6'
+AND [Fecha de Nacimiento] BETWEEN '1970-01-01' AND '2000-12-31';
+
+-- Se requiere un listado de los docentes que ingresaron en el año 2021 y concatenar los campos nombre y apellido. El resultado debe utilizar un separador: guión (-). 
+-- Ejemplo: Elba-Jimenez. Renombrar la nueva columna como Nombres_Apellidos. Los resultados de la nueva columna deben estar en mayúsculas. 
+-- Keywords: Staff, Fecha Ingreso, Nombre, Apellido.
+
+
+SELECT UPPER (CONCAT (Nombre, '-', Apellido)) AS Nombres_Apellidos, [Fecha Ingreso]
+FROM Staff
+WHERE YEAR ([Fecha Ingreso]) = 2021;
+
+-- Indicar la cantidad de encargados de docentes y de tutores. Renombrar la columna como CantEncargados. Quitar la palabra ”Encargado ” en cada uno de los registros. 
+-- Renombrar la columna como NuevoTipo. Keywords: Encargado, tipo, Encargado_ID.
+
+SELECT COUNT (Encargado_ID) AS CantEncargados, REPLACE (Tipo, 'Encargado', '') AS NuevoTipo
+FROM Encargado
+GROUP BY Tipo;
+
+-- Indicar cual es el precio promedio de las carreras y los cursos por jornada. Renombrar la nueva columna como Promedio. Ordenar los promedios de Mayor a menor. 
+-- Keywords: Tipo, Jornada, Asignaturas. CREAR UNA VISTA NUEVA DE ESTA CONSULTA
+
+SELECT Jornada, Tipo, AVG (Costo) AS Promedio
+FROM Asignaturas
+GROUP BY Jornada, Tipo
+ORDER BY Promedio DESC;
+
+CREATE VIEW NUEVAVISTA AS
+SELECT Jornada, Tipo, AVG (Costo) AS Promedio
+FROM Asignaturas
+GROUP BY Jornada, Tipo;
+
+--Se requiere calcular la edad de los estudiantes en una nueva columna. Renombrar a la nueva columna Edad. Filtrar solo los que son mayores de 18 años. 
+-- Ordenar de Menor a Mayor. Keywords: Fecha de Nacimiento, Estudiantes.
+
+SELECT *, DATEDIFF(YEAR, [Fecha de Nacimiento], GETDATE()) AS Edad
+FROM Estudiantes
+WHERE DATEDIFF(YEAR, [Fecha de Nacimiento], GETDATE()) > '18'
+ORDER BY Edad ASC;
